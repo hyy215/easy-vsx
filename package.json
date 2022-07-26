@@ -1,6 +1,6 @@
 {
     "name": "easy-vsx",
-    "version": "1.0.0",
+    "version": "1.6.0",
     "description": "Develop VS Code Extension Easier.",
     "publishConfig": {
         "access": "public",
