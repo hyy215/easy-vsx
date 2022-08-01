@@ -60,7 +60,7 @@ export class StepInput {
         while (steping) {
             try {
                 if (step < START_STEP || step > this._totalSteps) {
-                    throw 'Invalid Step.';
+                    throw new Error('Invalid Step.');
                 }
 
                 await this.step(step);
