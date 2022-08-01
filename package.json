@@ -4,12 +4,18 @@
     "description": "Develop VS Code Extension Easier.",
     "publishConfig": {
         "access": "public",
-		"registry": "https://registry.npmjs.org/"
+        "registry": "https://registry.npmjs.org/"
     },
-    "repository": "https://github.com/hyy215/easy-vsx.git",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hyy215/easy-vsx.git"
+    },
     "engines": {
         "vscode": "^1.46.0"
     },
+    "files": [
+        "lib/**/*"
+    ],
     "categories": [
         "Other"
     ],
