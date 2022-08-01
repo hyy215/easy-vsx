@@ -1,11 +1,4 @@
-import { 
-    Disposable, 
-    InputBox,
-    QuickInputButtons, 
-    QuickPick, 
-    QuickPickItem, 
-    window 
-} from "vscode";
+import { Disposable, InputBox, QuickInputButtons, QuickPick, QuickPickItem, window } from 'vscode';
 
 export interface InputBoxStep {
     title: string;
@@ -17,7 +10,7 @@ export interface InputBoxStep {
     validationMessage?: string;
 }
 
-export type QuickPickStepItemFn = () => PromiseLike<QuickPickItem[]>
+export type QuickPickStepItemFn = () => PromiseLike<QuickPickItem[]>;
 export interface QuickPickStep {
     title: string;
     items: QuickPickStepItemFn | QuickPickItem[];
@@ -36,7 +29,7 @@ export type StepResult = Readonly<QuickPickItem[]> | string | undefined;
 
 export enum StepStatus {
     back,
-    canecl
+    canecl,
 }
 
 export const START_STEP = 1;
@@ -67,7 +60,7 @@ export class StepInput {
         while (steping) {
             try {
                 if (step < START_STEP || step > this._totalSteps) {
-                    throw 'Invalid Step.'
+                    throw 'Invalid Step.';
                 }
 
                 await this.step(step);
@@ -75,7 +68,7 @@ export class StepInput {
 
                 if (step > this._totalSteps) {
                     return this._steps.map(step => {
-                        if(isQuickPickStep(step)) {
+                        if (isQuickPickStep(step)) {
                             return step.selectedItems;
                         } else {
                             return step.value;
@@ -119,9 +112,7 @@ export class StepInput {
         pick.step = step;
         pick.totalSteps = this._totalSteps;
         pick.ignoreFocusOut = true;
-        pick.buttons = [
-            ...(step !== START_STEP ? [QuickInputButtons.Back] : [])
-        ];
+        pick.buttons = [...(step !== START_STEP ? [QuickInputButtons.Back] : [])];
         pick.enabled = false;
         pick.selectedItems = state.selectedItems || [];
 
@@ -136,7 +127,7 @@ export class StepInput {
             return await new Promise((resolve, reject) => {
                 disposables.push(
                     pick.onDidAccept(() => {
-                        if(!!pick.selectedItems.length) {
+                        if (!!pick.selectedItems.length) {
                             state.selectedItems = pick.selectedItems;
                             resolve();
                         }
@@ -151,16 +142,16 @@ export class StepInput {
                     }),
                     pick.onDidHide(() => {
                         reject(StepStatus.canecl);
-                    })
-                )
+                    }),
+                );
 
                 pick.show();
                 this.showQuickPickItem(pick, state);
 
-                this._current = pick; 
-            })
+                this._current = pick;
+            });
         } finally {
-            disposables.forEach(disposable => disposable.dispose())
+            disposables.forEach(disposable => disposable.dispose());
         }
     }
 
@@ -176,7 +167,9 @@ export class StepInput {
             pick.enabled = true;
         }
 
-        pick.activeItems = pick.items.filter(item => state?.selectedItems?.find(v => v.label === item.label));
+        pick.activeItems = pick.items.filter(item =>
+            state?.selectedItems?.find(v => v.label === item.label),
+        );
     }
 
     createInputBox(step: number, state: InputBoxStep) {
@@ -184,15 +177,13 @@ export class StepInput {
 
         input.title = state.title;
         input.value = state.value || '';
-        input.placeholder = state.placeholder
+        input.placeholder = state.placeholder;
         input.prompt = state.prompt;
         input.password = !!state.password;
         input.step = step;
         input.totalSteps = this._totalSteps;
         input.ignoreFocusOut = true;
-        input.buttons = [
-            ...(step !== START_STEP ? [QuickInputButtons.Back] : [])
-        ];
+        input.buttons = [...(step !== START_STEP ? [QuickInputButtons.Back] : [])];
 
         return input;
     }
@@ -228,15 +219,14 @@ export class StepInput {
                     }),
                     input.onDidHide(() => {
                         reject(StepStatus.canecl);
-                    })
-                )
+                    }),
+                );
 
                 input.show();
                 this._current = input;
-            })
-
+            });
         } finally {
-            disposables.forEach(disposable => disposable.dispose())
+            disposables.forEach(disposable => disposable.dispose());
         }
     }
 
