@@ -36,7 +36,11 @@
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "lint": "eslint src --ext ts",
-        "pretty": "prettier --write \"src/**/*.ts\""
+        "pretty": "prettier --write \"src/**/*.ts\"",
+        "prepublishOnly": "npm run lint",
+        "preversion": "npm run lint",
+        "version": "npm run pretty && git add -A src",
+        "postversion": "git push && git push --tags"
     },
     "author": "hyy",
     "license": "MIT",
